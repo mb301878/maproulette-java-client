@@ -28,6 +28,7 @@ public class RuleList implements Serializable
     private static final long serialVersionUID = -1085774480815117637L;
 
     private String condition;
+    private List<RuleList> ruleList;
     private List<PriorityRule> rules;
 
     public boolean isSet()

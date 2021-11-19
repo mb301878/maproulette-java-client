@@ -23,5 +23,25 @@
         "operator": "equal"
       }
     ]
+  },
+  "lowPriorityRule": {
+    "condition": "OR",
+    "rules": [
+      {
+        "condition": "OR",
+        "rules": [
+          {
+            "value": "website. ",
+            "type": "string",
+            "operator": "is_not_empty"
+          }
+        ]
+      },
+      {
+        "value": "priority_pd.2",
+        "type": "string",
+        "operator": "equal"
+      }
+    ]
   }
 }

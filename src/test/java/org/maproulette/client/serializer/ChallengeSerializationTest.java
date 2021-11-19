@@ -152,6 +152,23 @@ public class ChallengeSerializationTest
                 .rules(Collections.singletonList(PriorityRule.builder().operator("equal")
                         .type("string").value("priority_pd.2").build()))
                 .build();
+        final var lowPriority = RuleList.builder()
+                .condition("OR")
+                .ruleList(Collections.singletonList(
+                        RuleList.builder()
+                                .condition("OR")
+                                .rules(Collections.singletonList(
+                                        PriorityRule.builder()
+                                                .operator("is_not_empty")
+                                                .type("string")
+                                                .value("website. ").build())).build()
+                ))
+                .rules(Collections.singletonList(
+                        PriorityRule.builder()
+                                .operator("equal")
+                                .type("string")
+                                .value("priority_pd.2").build()))
+                .build();
 
         Assertions.assertEquals(DESCRIPTION, deserializedChallenge.getDescription());
         Assertions.assertEquals(BLURB, deserializedChallenge.getBlurb());
@@ -163,7 +180,7 @@ public class ChallengeSerializationTest
         Assertions.assertEquals(highPriority, deserializedChallenge.getHighPriorityRule());
         Assertions.assertNotNull(deserializedChallenge.getMediumPriorityRule());
         Assertions.assertEquals(mediumPriority, deserializedChallenge.getMediumPriorityRule());
-        Assertions.assertNull(deserializedChallenge.getLowPriorityRule());
+        Assertions.assertEquals(lowPriority, deserializedChallenge.getLowPriorityRule());
     }
 
     /**
