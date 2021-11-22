@@ -44,7 +44,7 @@ task integrationTest(type: Test) {
 
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
-integrationTest.onlyIf { project.hasProperty('runIntegrationTests') }
+//integrationTest.onlyIf { project.hasProperty('runIntegrationTests') }
 
 tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")

@@ -76,13 +76,14 @@ public class BatchUploaderIntegrationTest extends IntegrationBase
     public void multipleProjectBatchTest() throws MapRouletteException
     {
         final var batchUploader = new BatchUploader(this.getConfiguration());
-        final var prefix = "zzzzzzProject";
+        final var prefix = "zzzzzzProjectzzzzzaa";
         final var projectList = new ArrayList<Long>();
         for (int projectIndex = 0; projectIndex < NUMBER_PROJECTS; projectIndex++)
         {
             final var projectIdentifier = this.getProjectAPI()
                     .create(Project.builder().name(prefix + projectIndex).build()).getId();
             projectList.add(projectIdentifier);
+            System.out.println("Starting task add for project id=" + projectIdentifier);
             this.addDefaultTasks(batchUploader, projectIdentifier);
         }
         batchUploader.flushAll();
@@ -90,7 +91,7 @@ public class BatchUploaderIntegrationTest extends IntegrationBase
         projectList.forEach(throwingConsumerWrapper(identifier ->
         {
             final var children = this.getProjectAPI().children(identifier, NUMBER_TASKS, 0);
-            Assertions.assertEquals(NUMBER_PROJECTS, children.size());
+            Assertions.assertEquals(NUMBER_CHALLENGES, children.size());
             children.forEach(throwingConsumerWrapper(child ->
             {
                 final var tasks = this.getChallengeAPI().children(child.getId(), NUMBER_TASKS, 0);
@@ -111,6 +112,7 @@ public class BatchUploaderIntegrationTest extends IntegrationBase
             for (int taskIndex = 0; taskIndex < NUMBER_TASKS; taskIndex++)
             {
                 uploader.addTask(newChallenge, this.getDefaultTask(-1, "Task" + taskIndex));
+                System.out.println("Adding task " + taskIndex + " parentId=" + parentIdentifier + " challenge=" + newChallenge.getName());
             }
         }
     }
