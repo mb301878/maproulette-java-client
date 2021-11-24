@@ -12,12 +12,15 @@ import org.maproulette.client.exception.MapRouletteException;
 import org.maproulette.client.model.Challenge;
 import org.maproulette.client.model.Project;
 import org.maproulette.client.model.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author mcuthbert
  */
 public class BatchUploaderIntegrationTest extends IntegrationBase
 {
+    private static final Logger LOG = LoggerFactory.getLogger(BatchUploaderIntegrationTest.class);
     private static final int NUMBER_PROJECTS = 4;
     private static final int NUMBER_CHALLENGES = 3;
     private static final int NUMBER_TASKS = 10;
@@ -76,14 +79,14 @@ public class BatchUploaderIntegrationTest extends IntegrationBase
     public void multipleProjectBatchTest() throws MapRouletteException
     {
         final var batchUploader = new BatchUploader(this.getConfiguration());
-        final var prefix = "zzzzzzProjectzzzzzaa";
+        final var prefix = "zzzzzzProjectzzzzzaac";
         final var projectList = new ArrayList<Long>();
         for (int projectIndex = 0; projectIndex < NUMBER_PROJECTS; projectIndex++)
         {
             final var projectIdentifier = this.getProjectAPI()
                     .create(Project.builder().name(prefix + projectIndex).build()).getId();
             projectList.add(projectIdentifier);
-            System.out.println("Starting task add for project id=" + projectIdentifier);
+            LOG.info("Starting task add for project id={}", projectIdentifier);
             this.addDefaultTasks(batchUploader, projectIdentifier);
         }
         batchUploader.flushAll();
@@ -112,7 +115,7 @@ public class BatchUploaderIntegrationTest extends IntegrationBase
             for (int taskIndex = 0; taskIndex < NUMBER_TASKS; taskIndex++)
             {
                 uploader.addTask(newChallenge, this.getDefaultTask(-1, "Task" + taskIndex));
-                System.out.println("Adding task " + taskIndex + " parentId=" + parentIdentifier + " challenge=" + newChallenge.getName());
+                LOG.info("Adding task {} parentId={} challengeName={}", taskIndex, parentIdentifier, newChallenge.getName());
             }
         }
     }

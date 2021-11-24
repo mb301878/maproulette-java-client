@@ -16,7 +16,7 @@ public final class Utilities
     {
         try
         {
-            return ObjectMapperFactory.getMapper().readValue(json, clazz);
+            return ObjectMapperSingleton.getMapper().readValue(json, clazz);
         }
         catch (final IOException e)
         {

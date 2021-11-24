@@ -13,6 +13,7 @@ import org.maproulette.client.model.PriorityRule;
 import org.maproulette.client.model.RuleList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.maproulette.client.utilities.ObjectMapperSingleton;
 
 /**
  * Tests whether a challenge can be read correctly from resources.
@@ -144,6 +145,11 @@ public class ChallengeSerializationTest
     {
         // This line will deserialize the challenge, and if it fails we know it didn't work.
         final var deserializedChallenge = this.getChallenge("challenges/testChallenge.json");
+
+        String res = ObjectMapperSingleton.getMapper().writeValueAsString(deserializedChallenge);
+        System.out.println("Here's the result:");
+        System.out.println(res);
+
         final var highPriority = RuleList.builder().condition("AND")
                 .rules(Collections.singletonList(PriorityRule.builder().operator("equal")
                         .type("string").value("priority_pd.3").build()))
